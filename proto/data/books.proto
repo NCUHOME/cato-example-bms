@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+
+package proto.data;
+
+
+option go_package = "cato-example-bms/generated/internal/models/database/books";
+
+import "proto/domain/books.proto";
+
+import "cato/proto/extension.proto";
+
+option (cato.cato_opt) = {
+  cato_package: "cato-example-bms/internal/models/database/books"
+};
+
+
+message Books {
+
+  option (cato.db_opt) = {name: "example"};
+  option (cato.table_opt) = {
+    name_option: {simple_name: "books"}
+    comment: "bms book info"
+    charset: "utf8mb4"
+    field_mapper: CATO_FIELD_MAPPER_CAMEL
+  };
+
+  option (cato.struct_opt) = {field_default_tags: {tag_name: "xorm", mapper: CATO_FIELD_MAPPER_CAMEL}};
+
+  int64 id = 1 [
+    (cato.column_opt) = {
+      keys: {key_type: CATO_DB_KEY_TYPE_PRIMARY, key_name: "pk_id", auto_incr: true}
+    }
+  ];
+
+  string name = 2 [
+    (cato.column_opt) = {
+      col_desc: {field_type: "VARCHAR(128)", nullable: false, default: ""},
+      keys: {key_type: CATO_DB_KEY_TYPE_UNIQUE, key_name: "uk_name"}
+    }
+  ];
+
+  string category = 3 [
+    (cato.column_opt) = {
+      col_desc: {field_type: "VARCHAR(32)", nullable: false, default: ""},
+      keys: {key_type: CATO_DB_KEY_TYPE_COMBINE, key_name: "idx_cc"}
+    }
+  ];
+
+  string book_class = 4 [
+    (cato.column_opt) = {
+      col_desc: {field_type: "VARCHAR(32)", nullable: false, default: ""},
+      keys: {key_type: CATO_DB_KEY_TYPE_COMBINE, key_name: "idx_cc"}
+    }
+  ];
+
+  domain.BookAuthor author = 5 [
+    (cato.column_opt) = {json_trans: true, col_desc: {field_type: "TEXT"}}
+  ];
+
+  int64 create_at = 6 [
+    (cato.column_opt) = {time_option: {unix_to_time: true}}
+  ];
+
+  int64 update_at = 7 [
+    (cato.column_opt) = {time_option: {unix_to_time: true}}
+  ];
+}

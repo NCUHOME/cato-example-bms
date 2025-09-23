@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package proto.inspect;
+
+
+option go_package = "cato-example-bms/generated/internal/models/inspect/books";
+
+import "proto/common/common.proto";
+import "proto/domain/books.proto";
+
+
+message SearchBooksByCategoryRequest {
+  string category = 1;
+}
+
+message SearchBooksByCategoryResponse {
+  common.ResponseCommonStruct base = 1;
+  repeated domain.BookBrief results = 2;
+}
+
+

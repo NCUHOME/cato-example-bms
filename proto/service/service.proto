@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+
+package proto.service;
+
+option go_package = "cato-example-bms/generated/internal/service";
+
+
+import "cato/proto/extension.proto";
+
+import "proto/inspect/books.proto";
+
+
+service BookManageService {
+
+  option (cato.http_opt) = {as_http_service: true, group_prefix: "/bms/v1/api"};
+
+  rpc SearchBooksByCategory
+      (inspect.SearchBooksByCategoryRequest) returns
+      (inspect.SearchBooksByCategoryResponse) {
+    option (cato.router_opt) = {
+      router: "/search/{category}"
+      content_type: "application/json"
+    };
+  };
+}

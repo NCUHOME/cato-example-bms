@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package proto.common;
+
+option go_package = "cato-example-bms/generated/internal/common";
+
+
+message RequestTraceHelper {
+  string x_request_id = 1;
+}
+
+message ResponseCommonStruct {
+  string biz_code = 1;
+  string biz_message = 2;
+}
+
+message CommonHeaderStruct {
+  string x_trace_id = 1;
+  string x_sign_info = 2;
+}
+
+message TableBaseModel {
+  int64 id = 1;
+  int64 create_time = 2;
+  int64 update_time = 3;
+}

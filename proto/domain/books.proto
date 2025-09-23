@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package proto.domain;
+
+option go_package = "cato-example-bms/generated/internal/models/domain/books";
+
+import "cato/proto/extension.proto";
+
+option (cato.cato_opt) = {
+  cato_package: "cato-example-bms/internal/models/domain/books"
+};
+
+message BookBrief {
+  int64 id = 1;
+  string name = 2;
+  string cover = 3;
+}
+
+message BookAuthor {
+  string name = 1;
+  int64 birth = 2;
+  string country = 3;
+}
+
+message BookDetail {
+
+  BookBrief brief = 1 [
+    (cato.impl_opt) = {flatten: true, generate_convertor: true}
+  ];
+  string category = 2;
+  string class = 3;
+  BookAuthor author = 4;
+}
