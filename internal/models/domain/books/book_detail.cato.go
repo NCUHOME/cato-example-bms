@@ -6,13 +6,13 @@ package books
 
 type BookDetail struct {
 
+    Brief *BookBrief 
+
     Category string 
 
     Class string 
 
     Author *BookAuthor 
-
-    Brief *BookBrief 
 
 }
 

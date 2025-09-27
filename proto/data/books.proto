@@ -54,15 +54,16 @@ message Books {
     }
   ];
 
-  domain.BookAuthor author = 5 [
-    (cato.column_opt) = {json_trans: true, col_desc: {field_type: "TEXT"}}
+  // related with author, auto generate json trans
+  domain.BookAuthor author = 6 [
+    (cato.column_opt) = {json_trans: {lazy_load: true} col_desc: {field_type: "TEXT"}}
   ];
 
-  int64 create_at = 6 [
+  int64 create_at = 10 [
     (cato.column_opt) = {time_option: {unix_to_time: true}}
   ];
 
-  int64 update_at = 7 [
+  int64 update_at = 11 [
     (cato.column_opt) = {time_option: {unix_to_time: true}}
   ];
 }

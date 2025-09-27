@@ -5,6 +5,8 @@ package books
 
 import (
     
+    "encoding/json"
+    
     domainbooks "cato-example-bms/internal/models/domain/books"
     
 )
@@ -12,19 +14,23 @@ import (
 
 type Books struct {
 
-    Category string ``
+    Id int64 
 
-    BookClass string ``
+    Name string 
 
-    Author *domainbooks.BookAuthor ``
+    Category string 
 
-    CreateAt int64 ``
+    BookClass string 
 
-    UpdateAt int64 ``
+    AuthorRaw string 
 
-    Id int64 ``
+    innerAuthor *domainbooks.BookAuthor 
 
-    Name string ``
+    Author string 
+
+    CreateAt int64 
+
+    UpdateAt int64 
 
 }
 
@@ -34,4 +40,36 @@ func (models *Books) TableName() string {
     
     return `books`
     
+}
+
+func (models *Books) GetAuthor() (*domainbooks.BookAuthor, error) {
+    
+    if models.innerAuthor != nil {
+        return models.innerAuthor, nil
+    }
+    
+    data := new(domainbooks.BookAuthor)
+    if err := json.Unmarshal([]byte(models.Author), data); err != nil {
+        return nil, err
+    }
+    
+    models.innerAuthor = data
+    return models.innerAuthor, nil
+    
+
+}
+
+func (models *Books) SetAuthor(data *domainbooks.BookAuthor) error {
+    if data == nil {
+        return nil
+    }
+    ds, err := json.Marshal(data)
+    if err != nil {
+        return err
+    }
+    models.Author = string(ds)
+    
+    models.innerAuthor = data
+    
+    return nil
 }
