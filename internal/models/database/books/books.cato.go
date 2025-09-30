@@ -2,74 +2,50 @@
 
 package books
 
-
 import (
-    
-    "encoding/json"
-    
-    domainbooks "cato-example-bms/internal/models/domain/books"
-    
+	domainbooks "cato-example-bms/internal/models/domain/books"
+	"encoding/json"
 )
 
-
 type Books struct {
-
-    Id int64 
-
-    Name string 
-
-    Category string 
-
-    BookClass string 
-
-    AuthorRaw string 
-
-    innerAuthor *domainbooks.BookAuthor 
-
-    Author string 
-
-    CreateAt int64 
-
-    UpdateAt int64 
-
+	Id          int64
+	Name        string
+	Category    string
+	BookClass   string
+	innerAuthor *domainbooks.BookAuthor
+	Author      string
+	CreateAt    int64
+	UpdateAt    int64
 }
-
 
 func (models *Books) TableName() string {
-    // bms book info
-    
-    return `books`
-    
-}
+	// bms book info
 
+	return `books`
+
+}
 func (models *Books) GetAuthor() (*domainbooks.BookAuthor, error) {
-    
-    if models.innerAuthor != nil {
-        return models.innerAuthor, nil
-    }
-    
-    data := new(domainbooks.BookAuthor)
-    if err := json.Unmarshal([]byte(models.Author), data); err != nil {
-        return nil, err
-    }
-    
-    models.innerAuthor = data
-    return models.innerAuthor, nil
-    
+	if models.innerAuthor != nil {
+		return models.innerAuthor, nil
+	}
+	data := new(domainbooks.BookAuthor)
+	if err := json.Unmarshal([]byte(models.Author), data); err != nil {
+		return nil, err
+	}
+	models.innerAuthor = data
+	return models.innerAuthor, nil
 
 }
 
 func (models *Books) SetAuthor(data *domainbooks.BookAuthor) error {
-    if data == nil {
-        return nil
-    }
-    ds, err := json.Marshal(data)
-    if err != nil {
-        return err
-    }
-    models.Author = string(ds)
-    
-    models.innerAuthor = data
-    
-    return nil
+	if data == nil {
+		return nil
+	}
+	ds, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+	models.Author = string(ds)
+	models.innerAuthor = data
+	return nil
 }

@@ -2,15 +2,8 @@
 
 package books
 
-
-
 type BookBrief struct {
-
-    Id int64 
-
-    Name string 
-
-    Cover string 
-
+	Id    int64
+	Name  string
+	Cover string
 }
-

@@ -2,15 +2,8 @@
 
 package books
 
-
-
 type BookAuthor struct {
-
-    Name string 
-
-    Birth int64 
-
-    Country string 
-
+	Name    string
+	Birth   int64
+	Country string
 }
-
