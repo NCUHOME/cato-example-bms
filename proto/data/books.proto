@@ -25,11 +25,15 @@ message Books {
     field_mapper: CATO_FIELD_MAPPER_CAMEL
   };
 
-  option (cato.struct_opt) = {field_default_tags: {tag_name: "xorm", mapper: CATO_FIELD_MAPPER_CAMEL}};
+  option (cato.struct_opt) = {
+    field_default_tags: {tag_name: "xorm", mapper: CATO_FIELD_MAPPER_SNAKE_CASE}
+    field_default_tags: {tag_name: "bson", mapper: CATO_FIELD_MAPPER_CAMEL}
+  };
 
   int64 id = 1 [
     (cato.column_opt) = {
       keys: {key_type: CATO_DB_KEY_TYPE_PRIMARY, key_name: "pk_id", auto_incr: true}
+      tags: {tag_name: "bson", tag_value: "_id,omitempty"}
     }
   ];
 
@@ -60,10 +64,10 @@ message Books {
   ];
 
   int64 create_at = 10 [
-    (cato.column_opt) = {time_option: {unix_to_time: true}}
+    (cato.column_opt) = {time_option: {unix_to_time: true} tags: {tag_name: "xorm", tag_value: "create_time"}}
   ];
 
   int64 update_at = 11 [
-    (cato.column_opt) = {time_option: {unix_to_time: true}}
+    (cato.column_opt) = {time_option: {unix_to_time: true}, tags: {tag_name: "xorm", tag_value: "update_time"}}
   ];
 }

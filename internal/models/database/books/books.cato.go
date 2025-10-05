@@ -5,39 +5,39 @@ package books
 import (
 	domainbooks "cato-example-bms/internal/models/domain/books"
 	"encoding/json"
+	"time"
 )
 
 type Books struct {
-	Id          int64
-	Name        string
-	Category    string
-	BookClass   string
+	Id          int64  `bson:"_id,omitempty" xorm:"id" `
+	Name        string `xorm:"name" bson:"Name"`
+	Category    string `xorm:"category" bson:"Category"`
+	BookClass   string `xorm:"book_class" bson:"BookClass"`
 	innerAuthor *domainbooks.BookAuthor
-	Author      string
-	CreateAt    int64
-	UpdateAt    int64
+	Author      string `xorm:"author" bson:"Author"`
+	CreateAt    int64  `xorm:"create_time"  bson:"CreateAt"`
+	UpdateAt    int64  `xorm:"update_time"  bson:"UpdateAt"`
 }
 
-func (models *Books) TableName() string {
+func (model *Books) TableName() string {
 	// bms book info
-
 	return `books`
-
 }
-func (models *Books) GetAuthor() (*domainbooks.BookAuthor, error) {
-	if models.innerAuthor != nil {
-		return models.innerAuthor, nil
+
+func (model *Books) GetAuthor() (*domainbooks.BookAuthor, error) {
+	if model.innerAuthor != nil {
+		return model.innerAuthor, nil
 	}
 	data := new(domainbooks.BookAuthor)
-	if err := json.Unmarshal([]byte(models.Author), data); err != nil {
+	if err := json.Unmarshal([]byte(model.Author), data); err != nil {
 		return nil, err
 	}
-	models.innerAuthor = data
-	return models.innerAuthor, nil
+	model.innerAuthor = data
+	return model.innerAuthor, nil
 
 }
 
-func (models *Books) SetAuthor(data *domainbooks.BookAuthor) error {
+func (model *Books) SetAuthor(data *domainbooks.BookAuthor) error {
 	if data == nil {
 		return nil
 	}
@@ -45,7 +45,49 @@ func (models *Books) SetAuthor(data *domainbooks.BookAuthor) error {
 	if err != nil {
 		return err
 	}
-	models.Author = string(ds)
-	models.innerAuthor = data
+	model.Author = string(ds)
+	model.innerAuthor = data
+	return nil
+}
+
+func (model *Books) GetTimeCreateAt() time.Time {
+	return time.Unix(model.CreateAt, 0)
+}
+
+func (model *Books) GetFormatTimeCreateAt() string {
+	return model.GetTimeCreateAt().Format("2006-01-02T15:04:05Z07:00")
+}
+
+func (model *Books) SetTimeCreateAt(t time.Time) {
+	model.CreateAt = t.Unix()
+}
+
+func (model *Books) SetFormatTimeCreateAt(s string) error {
+	t, err := time.Parse("2006-01-02T15:04:05Z07:00", s)
+	if err != nil {
+		return err
+	}
+	model.SetTimeCreateAt(t)
+	return nil
+}
+
+func (model *Books) GetTimeUpdateAt() time.Time {
+	return time.Unix(model.UpdateAt, 0)
+}
+
+func (model *Books) GetFormatTimeUpdateAt() string {
+	return model.GetTimeUpdateAt().Format("2006-01-02T15:04:05Z07:00")
+}
+
+func (model *Books) SetTimeUpdateAt(t time.Time) {
+	model.UpdateAt = t.Unix()
+}
+
+func (model *Books) SetFormatTimeUpdateAt(s string) error {
+	t, err := time.Parse("2006-01-02T15:04:05Z07:00", s)
+	if err != nil {
+		return err
+	}
+	model.SetTimeUpdateAt(t)
 	return nil
 }
