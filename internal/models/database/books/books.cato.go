@@ -9,6 +9,7 @@ import (
 )
 
 type Books struct {
+	ext         *extension
 	Id          int64  `bson:"_id,omitempty" xorm:"id" `
 	Name        string `xorm:"name" bson:"Name"`
 	Category    string `xorm:"category" bson:"Category"`
@@ -91,3 +92,33 @@ func (model *Books) SetFormatTimeUpdateAt(s string) error {
 	model.SetTimeUpdateAt(t)
 	return nil
 }
+
+func (model *Books) FromMap(data map[string]interface{}) {
+	for col, value := range data {
+		switch col {
+		case model.GetIdCol():
+			model.SetIdCol(value)
+
+		}
+	}
+}
+
+func (model *Books) ToMap() map[string]interface{} {
+	return map[string]interface{}{
+		model.GetIdCol(): model.Id,
+
+	}
+}
+
+func (model *Books) GetIdCol() string {}
+
+func (model *Books) SetIdCol(v interface{}) {}
+
+func (model *Books) TableDiff(from *Books) map[string]interface{} {
+
+}
+
+func (model *Books) TableCopy() *Books {
+
+}
+
