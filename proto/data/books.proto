@@ -12,6 +12,8 @@ import "cato/proto/extension.proto";
 
 option (cato.cato_opt) = {
   cato_package: "cato-example-bms/internal/models/database/books"
+  repo_package: "cato-example-bms/internal/repo/books"
+  rdb_repo_package: "cato-example-bms/internal/rdb/books"
 };
 
 
@@ -34,6 +36,7 @@ message Books {
     (cato.column_opt) = {
       keys: {key_type: CATO_DB_KEY_TYPE_PRIMARY, key_name: "pk_id", auto_incr: true}
       tags: {tag_name: "bson", tag_value: "_id,omitempty"}
+      col_desc: {field_type: "BIGINT"}
     }
   ];
 
@@ -64,10 +67,16 @@ message Books {
   ];
 
   int64 create_at = 10 [
-    (cato.column_opt) = {time_option: {unix_to_time: true} tags: {tag_name: "xorm", tag_value: "create_time"}}
+    (cato.column_opt) = {
+      time_option: {unix_to_time: true} tags: {tag_name: "xorm", tag_value: "create_time"}
+      col_desc: {field_type: "BIGINT"}
+    }
   ];
 
   int64 update_at = 11 [
-    (cato.column_opt) = {time_option: {unix_to_time: true}, tags: {tag_name: "xorm", tag_value: "update_time"}}
+    (cato.column_opt) = {
+      time_option: {unix_to_time: true}, tags: {tag_name: "xorm", tag_value: "update_time"}
+      col_desc: {field_type: "BIGINT"}
+    }
   ];
 }

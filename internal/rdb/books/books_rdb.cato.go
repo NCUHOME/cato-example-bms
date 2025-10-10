@@ -1,0 +1,114 @@
+// code generate by proto-gen-cato, DO NOT EDIT
+
+package books
+
+import (
+	"context"
+
+	model "cato-example-bms/internal/models/database/books"
+	"github.com/Masterminds/squirrel"
+)
+
+type basicRepo struct {
+	engine
+}
+
+func (b *basicRepo) FindById(ctx context.Context, container *model.Books) (*model.Books, error) {
+	cond := squirrel.Eq{
+		container.GetColId(): container.Id,
+	}
+	sql, args, err := squirrel.Select(container.AllCols()...).From(container.TableName()).Where(cond).ToSql()
+	if err != nil {
+		return nil, err
+	}
+	return b.FetchOne(ctx, container.TableName(), sql, args...)
+}
+
+func (b *basicRepo) UpdateById(ctx context.Context, data map[string]interface{}, container *model.Books) error {
+	cond := squirrel.Eq{
+		container.GetColId(): container.Id,
+	}
+	sql, args, err := squirrel.Update(container.TableName()).SetMap(data).Where(cond).ToSql()
+	if err != nil {
+		return err
+	}
+	_, err = b.Exec(ctx, container.TableName(), sql, args...)
+	return err
+}
+
+func (b *basicRepo) DeleteById(ctx context.Context, container *model.Books) error {
+	cond := squirrel.Eq{
+		container.GetColId(): container.Id,
+	}
+	sql, args, err := squirrel.Delete(container.TableName()).Where(cond).ToSql()
+	if err != nil {
+		return err
+	}
+	_, err = b.Exec(ctx, container.TableName(), sql, args...)
+	return err
+}
+
+func (b *basicRepo) FindByName(ctx context.Context, container *model.Books) (*model.Books, error) {
+	cond := squirrel.Eq{
+		container.GetColName(): container.Name,
+	}
+	sql, args, err := squirrel.Select(container.AllCols()...).From(container.TableName()).Where(cond).ToSql()
+	if err != nil {
+		return nil, err
+	}
+	return b.FetchOne(ctx, container.TableName(), sql, args...)
+}
+
+func (b *basicRepo) UpdateByName(ctx context.Context, data map[string]interface{}, container *model.Books) error {
+	cond := squirrel.Eq{
+		container.GetColName(): container.Name,
+	}
+	sql, args, err := squirrel.Update(container.TableName()).SetMap(data).Where(cond).ToSql()
+	if err != nil {
+		return err
+	}
+	_, err = b.Exec(ctx, container.TableName(), sql, args...)
+	return err
+}
+
+func (b *basicRepo) DeleteByName(ctx context.Context, container *model.Books) error {
+	cond := squirrel.Eq{
+		container.GetColName(): container.Name,
+	}
+	sql, args, err := squirrel.Delete(container.TableName()).Where(cond).ToSql()
+	if err != nil {
+		return err
+	}
+	_, err = b.Exec(ctx, container.TableName(), sql, args...)
+	return err
+}
+
+func (b *basicRepo) FindByCategoryAndBookClass(ctx context.Context, container *model.Books) ([]*model.Books, error) {
+	cond := squirrel.Eq{
+		container.GetColCategory():  container.Category,
+		container.GetColBookClass(): container.BookClass,
+	}
+	sql, args, err := squirrel.Select(container.AllCols()...).From(container.TableName()).Where(cond).ToSql()
+	if err != nil {
+		return nil, err
+	}
+	return b.FetchAll(ctx, container.TableName(), sql, args...)
+}
+
+func (b *basicRepo) Insert(ctx context.Context, data map[string]interface{}) error {
+	container := new(model.Books)
+	container.FromMap(data)
+	cols, values := make([]string, len(data)), make([]interface{}, len(data))
+	index := 0
+	for key, value := range data {
+		cols[index] = key
+		values[index] = value
+		index++
+	}
+	sql, args, err := squirrel.Insert(container.TableName()).Columns(cols...).Values(values...).ToSql()
+	if err != nil {
+		return err
+	}
+	_, err = b.Exec(ctx, container.TableName(), sql, args...)
+	return err
+}
