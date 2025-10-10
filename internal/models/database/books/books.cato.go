@@ -10,14 +10,14 @@ import (
 
 type Books struct {
 	ext         *extension
-	Id          int64  `bson:"Id" xorm:"id"`
+	Id          int64  `bson:"_id,omitempty"  xorm:"id"`
 	Name        string `bson:"Name" xorm:"name"`
 	Category    string `bson:"Category" xorm:"category"`
 	BookClass   string `bson:"BookClass" xorm:"book_class"`
 	innerAuthor *domainbooks.BookAuthor
 	Author      string `bson:"Author" xorm:"author"`
-	CreateAt    int64  `bson:"CreateAt" xorm:"create_at"`
-	UpdateAt    int64  `bson:"UpdateAt" xorm:"update_at"`
+	CreateAt    int64  `xorm:"create_time" bson:"CreateAt" `
+	UpdateAt    int64  `xorm:"update_time" bson:"UpdateAt" `
 }
 
 func (model *Books) TableName() string {
