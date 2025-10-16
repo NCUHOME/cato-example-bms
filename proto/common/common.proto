@@ -4,6 +4,13 @@ package proto.common;
 
 option go_package = "cato-example-bms/generated/internal/common";
 
+import "cato/proto/extension.proto";
+
+option (cato.cato_opt) = {
+  cato_package: "cato-example-bms/internal/inspect/common"
+};
+
+
 
 message RequestTraceHelper {
   string x_request_id = 1;

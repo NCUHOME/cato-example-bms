@@ -13,14 +13,13 @@ import "proto/inspect/books.proto";
 
 service BookManageService {
 
-  option (cato.http_opt) = {as_http_service: true, group_prefix: "/bms/v1/api"};
+  option (cato.http_opt) = {as_http_service: true, group_prefix: "/bms/api"};
 
-  rpc SearchBooksByCategory
-      (inspect.SearchBooksByCategoryRequest) returns
-      (inspect.SearchBooksByCategoryResponse) {
+  rpc SearchBooksByCategoryV1 (inspect.SearchBooksByCategory.Request) returns (inspect.SearchBooksByCategory.Response) {
     option (cato.router_opt) = {
-      router: "/search/{category}"
-      content_type: "application/json"
+      router: "/v1/search"
+      content_type: "application/json",
+      method: "GET",
     };
   };
 }
