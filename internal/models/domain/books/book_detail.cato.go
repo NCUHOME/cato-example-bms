@@ -3,8 +3,8 @@
 package books
 
 type BookDetail struct {
-	Brief    *BookBrief
+	Brief    **BookBrief
 	Category string
 	Class    string
-	Author   *BookAuthor
+	Author   **BookAuthor
 }

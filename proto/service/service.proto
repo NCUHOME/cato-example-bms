@@ -7,19 +7,20 @@ option go_package = "cato-example-bms/generated/internal/service";
 
 
 import "cato/proto/extension.proto";
-
 import "proto/inspect/books.proto";
+
+option (cato.cato_opt) = {
+  http_handler_package: "cato-example-bms/internal/handlers/books"
+};
 
 
 service BookManageService {
 
-  option (cato.http_opt) = {as_http_service: true, group_prefix: "/bms/api"};
+  option (cato.http_opt) = {as_http_service: true, group_prefix: "/api/bms"};
 
-  rpc SearchBooksByCategoryV1 (inspect.SearchBooksByCategory.Request) returns (inspect.SearchBooksByCategory.Response) {
+  rpc SearchBooksByCategoryV1 (inspect.SearchBooksByCategoryRequest) returns (inspect.SearchBooksByCategoryResponse) {
     option (cato.router_opt) = {
-      router: "/v1/search"
-      content_type: "application/json",
-      method: "GET",
+      router: "/v1/search" method: "GET",
     };
   };
 }

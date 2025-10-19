@@ -5,26 +5,33 @@ import (
 	"net/http"
 )
 
-type BookManageHttpHandler struct {
-	service BookManageService
-	tier    BookManageServiceTier
+type BookManageServiceHttpHandler struct {
+	service   BookManageServiceService
+	tier      BookManageServiceServiceTier
+	container BookManageServiceServiceContainer
 }
 
-func (s *BookManageHttpHandler) Init(service BookManageService, tier BookManageServiceTier) {
+func NewBookManageServiceHttpHandler(
+	service BookManageServiceService,
+	tier BookManageServiceServiceTier,
+	container BookManageServiceServiceContainer,
+) *BookManageServiceHttpHandler {
+	s := new(BookManageServiceHttpHandler)
 	s.service = service
 	s.tier = tier
+	s.container = container
+	return s
 }
 
-func (s *BookManageHttpHandler) GetRoutersMap() map[string]http.HandlerFunc {
-	funcs := make(map[string]http.HandlerFunc)
-	funcs["GET /v1/search/category"] = func(w http.ResponseWriter, r *http.Request) {
-		ctx, request := s.tier.BuildSearchBooksByCategoryV1Request(r)
-		response, err := s.service.SearchBooksByCategoryV1(ctx, request)
-		s.tier.WrapSearchBooksByCategoryV1Response(w, response, err)
-	}
-	return funcs
+func (handler *BookManageServiceHttpHandler) GetRoutersMap() map[string]http.HandlerFunc {
+	handler.container.Set("GET", "/v1/search", func(w http.ResponseWriter, r *http.Request) {
+		ctx, request := handler.tier.BuildSearchBooksByCategoryV1Request(r)
+		response, err := handler.service.SearchBooksByCategoryV1(ctx, request)
+		handler.tier.WrapSearchBooksByCategoryV1Response(w, response, err)
+	})
+	return handler.container.ToMap()
 }
 
-func (s *BookManageHttpHandler) GetRouterGroupBase() string {
-	return "/bms/api"
+func (handler *BookManageServiceHttpHandler) GetRouterGroupBase() string {
+	return ""
 }

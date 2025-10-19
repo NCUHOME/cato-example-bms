@@ -14,15 +14,12 @@ option (cato.cato_opt) = {
 };
 
 
-message SearchBooksByCategory {
-  message Request {
-    string category = 1;
-  }
-
-  message Response {
-    common.ResponseCommonStruct base = 1;
-    repeated domain.BookBrief results = 2;
-  }
+message SearchBooksByCategoryRequest {
+  string category = 1;
 }
 
+message SearchBooksByCategoryResponse {
+  common.ResponseCommonStruct base = 1;
+  repeated domain.BookBrief results = 2;
+}
 

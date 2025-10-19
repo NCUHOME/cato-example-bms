@@ -14,7 +14,7 @@ type Books struct {
 	Name        string `bson:"Name" xorm:"name"`
 	Category    string `bson:"Category" xorm:"category"`
 	BookClass   string `bson:"BookClass" xorm:"book_class"`
-	innerAuthor *domainbooks.BookAuthor
+	innerAuthor **domainbooks.BookAuthor
 	Author      string `bson:"Author" xorm:"author"`
 	CreateAt    int64  `xorm:"create_time" bson:"CreateAt" `
 	UpdateAt    int64  `xorm:"update_time" bson:"UpdateAt" `
@@ -65,7 +65,7 @@ func (model *Books) SetColAuthor(value interface{}) {
 	model.Author = value.(string)
 }
 
-func (model *Books) GetAuthor() (*domainbooks.BookAuthor, error) {
+func (model *Books) GetAuthor() (**domainbooks.BookAuthor, error) {
 	if model.innerAuthor != nil {
 		return model.innerAuthor, nil
 	}
@@ -78,7 +78,7 @@ func (model *Books) GetAuthor() (*domainbooks.BookAuthor, error) {
 
 }
 
-func (model *Books) SetAuthor(data *domainbooks.BookAuthor) error {
+func (model *Books) SetAuthor(data **domainbooks.BookAuthor) error {
 	if data == nil {
 		return nil
 	}

@@ -2,17 +2,22 @@
 package books
 
 import (
+	inspectbooks "cato-example-bms/internal/inspect/books"
 	"context"
 	"net/http"
-
-	booksinspect "cato-example-bms/internal/inspect/books"
 )
 
-type BookManageService interface {
-	SearchBooksByCategoryV1(ctx context.Context, request *booksinspect.SearchBooksByCategoryRequest) (*booksinspect.SearchBooksByCategoryResponse, error)
+type BookManageServiceService interface {
+	SearchBooksByCategoryV1(ctx context.Context, request *inspectbooks.SearchBooksByCategoryRequest) (*inspectbooks.SearchBooksByCategoryResponse, error)
 }
 
-type BookManageServiceTier interface {
-	BuildSearchBooksByCategoryV1Request(input *http.Request) (context.Context, *booksinspect.SearchBooksByCategoryRequest)
-	WrapSearchBooksByCategoryV1Response(output http.ResponseWriter, resp *booksinspect.SearchBooksByCategoryResponse, err error)
+type BookManageServiceServiceTier interface {
+	BuildSearchBooksByCategoryV1Request(input *http.Request) (context.Context, *inspectbooks.SearchBooksByCategoryRequest)
+	WrapSearchBooksByCategoryV1Response(output http.ResponseWriter, resp *inspectbooks.SearchBooksByCategoryResponse, err error)
+}
+
+type BookManageServiceServiceContainer interface {
+	Set(method string, path string, runner func(w http.ResponseWriter, r *http.Request))
+	Get(method string, path string) (func(w http.ResponseWriter, r *http.Request), bool)
+	ToMap() map[string]http.HandlerFunc
 }

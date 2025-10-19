@@ -6,7 +6,7 @@ import (
 	booksinspect "cato-example-bms/internal/inspect/books"
 )
 
-func NewBookManagerService() BookManageService {
+func NewBookManagerService() BookManageServiceService {
 	return new(bookManagerService)
 }
 

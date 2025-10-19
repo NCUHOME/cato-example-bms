@@ -9,9 +9,12 @@ import (
 )
 
 func init() {
-	handler := new(BookManageHttpHandler)
+	handler := NewBookManageServiceHttpHandler(
+		NewBookManagerService(),
+		NewBookManagerServiceTier(),
+		NewBookManageServiceContainer(),
+	)
 	srv := app.GetApp().Group(handler.GetRouterGroupBase())
-	handler.Init(NewBookManagerService(), NewBookManagerServiceTier())
 	for path, runner := range handler.GetRoutersMap() {
 		pattern := strings.SplitN(path, " ", 2)
 		srv.Handle(pattern[0], pattern[1], gin.WrapF(runner))

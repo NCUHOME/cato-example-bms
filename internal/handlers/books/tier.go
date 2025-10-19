@@ -7,11 +7,12 @@ import (
 	booksinspect "cato-example-bms/internal/inspect/books"
 )
 
-func NewBookManagerServiceTier() BookManageServiceTier {
+func NewBookManagerServiceTier() BookManageServiceServiceTier {
 	return new(bookManagerServiceTier)
 }
 
-type bookManagerServiceTier struct{}
+type bookManagerServiceTier struct {
+}
 
 func (b bookManagerServiceTier) BuildSearchBooksByCategoryV1Request(input *http.Request) (context.Context, *booksinspect.SearchBooksByCategoryRequest) {
 	return input.Context(), &booksinspect.SearchBooksByCategoryRequest{}
