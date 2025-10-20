@@ -10,3 +10,8 @@ import (
 type SearchBooksByCategoryRequest struct {
 	Category string
 }
+
+type SearchBooksByCategoryResponse struct {
+	Base    *inspectcommon.ResponseCommonStruct
+	Results []*domainbooks.BookBrief
+}

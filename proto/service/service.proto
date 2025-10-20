@@ -10,7 +10,7 @@ import "cato/proto/extension.proto";
 import "proto/inspect/books.proto";
 
 option (cato.cato_opt) = {
-  http_handler_package: "cato-example-bms/internal/handlers/books"
+  cato_package: "cato-example-bms/internal/handlers/books"
 };
 
 
