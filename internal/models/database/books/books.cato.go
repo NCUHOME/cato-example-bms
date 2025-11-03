@@ -10,8 +10,8 @@ import (
 
 type Books struct {
 	ext         *extension
-	Id          int64  `bson:"_id,omitempty"  xorm:"id"`
-	Name        string `bson:"Name" xorm:"name"`
+	Id          int64  `bson:"_id,omitempty"  xorm:"id"` //book id
+	Name        string `bson:"Name" xorm:"name"`         //book's name
 	Category    string `bson:"Category" xorm:"category"`
 	BookClass   string `bson:"BookClass" xorm:"book_class"`
 	innerAuthor *domainbooks.BookAuthor
@@ -204,5 +204,11 @@ func (model *Books) FromMap(data map[string]interface{}) {
 	_, ok = data[model.GetColUpdateAt()]
 	if ok {
 		model.UpdateAt = data[model.GetColUpdateAt()].(int64)
+	}
+}
+func (model *Books) GetclassCols() []string {
+	return []string{
+		"category",
+		"book_class",
 	}
 }

@@ -36,27 +36,28 @@ message Books {
     (cato.column_opt) = {
       keys: {key_type: CATO_DB_KEY_TYPE_PRIMARY, key_name: "pk_id", auto_incr: true}
       tags: {tag_name: "bson", tag_value: "_id,omitempty"}
-      col_desc: {field_type: "BIGINT"}
+      col_desc: {field_type: "BIGINT", comment: "book id"}
     }
   ];
 
+  // book name, such as 《Cien años de soledad》
   string name = 2 [
     (cato.column_opt) = {
-      col_desc: {field_type: "VARCHAR(128)", nullable: false, default: ""},
+      col_desc: {field_type: "VARCHAR(128)", nullable: false, default: "", comment: "book's name"},
       keys: {key_type: CATO_DB_KEY_TYPE_UNIQUE, key_name: "uk_name"}
     }
   ];
 
   string category = 3 [
     (cato.column_opt) = {
-      col_desc: {field_type: "VARCHAR(32)", nullable: false, default: ""},
+      col_desc: {field_type: "VARCHAR(32)", nullable: false, default: "", col_group: "class"},
       keys: {key_type: CATO_DB_KEY_TYPE_COMBINE, key_name: "idx_cc"}
     }
   ];
 
   string book_class = 4 [
     (cato.column_opt) = {
-      col_desc: {field_type: "VARCHAR(32)", nullable: false, default: ""},
+      col_desc: {field_type: "VARCHAR(32)", nullable: false, default: "", col_group: "class"},
       keys: {key_type: CATO_DB_KEY_TYPE_COMBINE, key_name: "idx_cc"}
     }
   ];
