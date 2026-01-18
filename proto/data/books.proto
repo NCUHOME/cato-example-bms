@@ -22,8 +22,7 @@ message Books {
   option (cato.db_opt) = {name: "example"};
   option (cato.table_opt) = {
     name_option: {simple_name: "books"}
-    comment: "bms book info"
-    charset: "utf8mb4"
+
     field_mapper: CATO_FIELD_MAPPER_CAMEL
   };
 
@@ -34,7 +33,7 @@ message Books {
 
   int64 id = 1 [
     (cato.column_opt) = {
-      keys: {key_type: CATO_DB_KEY_TYPE_PRIMARY, key_name: "pk_id", auto_incr: true}
+      keys: {key_type: CATO_DB_KEY_TYPE_PRIMARY, key_name: "pk_id"}
       tags: {tag_name: "bson", tag_value: "_id,omitempty"}
       col_desc: {field_type: "BIGINT", comment: "book id"}
     }

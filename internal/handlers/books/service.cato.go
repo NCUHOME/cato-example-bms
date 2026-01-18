@@ -13,12 +13,6 @@ type BookManageServiceService interface {
 }
 
 type BookManageServiceServiceTier interface {
-	BuildSearchBooksByCategoryV1Request(input *http.Request) (context.Context, *inspectbooks.SearchBooksByCategoryRequest)
-	WrapSearchBooksByCategoryV1Response(output http.ResponseWriter, resp *inspectbooks.SearchBooksByCategoryResponse, err error)
-}
-
-type BookManageServiceServiceContainer interface {
-	Set(method string, path string, runner func(w http.ResponseWriter, r *http.Request))
-	Get(method string, path string) (func(w http.ResponseWriter, r *http.Request), bool)
-	ToMap() map[string]http.HandlerFunc
+	BeforeSearchBooksByCategoryV1Request(input *http.Request) (context.Context, *inspectbooks.SearchBooksByCategoryRequest)
+	AfterSearchBooksByCategoryV1Response(output http.ResponseWriter, resp *inspectbooks.SearchBooksByCategoryResponse, err error)
 }

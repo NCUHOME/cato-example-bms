@@ -6,6 +6,8 @@ import (
 	domainbooks "cato-example-bms/internal/models/domain/books"
 	"encoding/json"
 	"time"
+
+	"github.com/Masterminds/squirrel"
 )
 
 type Books struct {
@@ -20,8 +22,12 @@ type Books struct {
 	UpdateAt    int64  `xorm:"update_time" bson:"UpdateAt" `
 }
 
+func (model *Books) Placeholder() squirrel.PlaceholderFormat {
+	return squirrel.Question
+}
+
 func (model *Books) TableName() string {
-	// bms book info
+	//
 	return `books`
 }
 

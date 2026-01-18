@@ -3,18 +3,20 @@ package books
 
 import (
 	"net/http"
+
+	"github.com/ncuhome/cato/core/httpc"
 )
 
 type BookManageServiceHttpHandler struct {
 	service   BookManageServiceService
 	tier      BookManageServiceServiceTier
-	container BookManageServiceServiceContainer
+	container httpc.Container
 }
 
 func NewBookManageServiceHttpHandler(
 	service BookManageServiceService,
 	tier BookManageServiceServiceTier,
-	container BookManageServiceServiceContainer,
+	container httpc.Container,
 ) *BookManageServiceHttpHandler {
 	s := new(BookManageServiceHttpHandler)
 	s.service = service
@@ -24,14 +26,20 @@ func NewBookManageServiceHttpHandler(
 }
 
 func (handler *BookManageServiceHttpHandler) GetRoutersMap() map[string]http.HandlerFunc {
-	handler.container.Set("GET", "/v1/search", func(w http.ResponseWriter, r *http.Request) {
-		ctx, request := handler.tier.BuildSearchBooksByCategoryV1Request(r)
-		response, err := handler.service.SearchBooksByCategoryV1(ctx, request)
-		handler.tier.WrapSearchBooksByCategoryV1Response(w, response, err)
-	})
+	handler.container.Set(
+		handler.container.EncodeKey("GET", "/v1/search"),
+		func(w http.ResponseWriter, r *http.Request) {
+			ctx, request := handler.tier.BeforeSearchBooksByCategoryV1Request(r)
+			response, err := handler.service.SearchBooksByCategoryV1(ctx, request)
+			handler.tier.AfterSearchBooksByCategoryV1Response(w, response, err)
+		})
 	return handler.container.ToMap()
 }
 
 func (handler *BookManageServiceHttpHandler) GetRouterGroupBase() string {
-	return ""
+	return "/api/bms"
+}
+
+func (handler *BookManageServiceHttpHandler) DecodeKey(key string) (string, string, error) {
+	return handler.container.DecodeKey(key)
 }

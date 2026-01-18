@@ -6,11 +6,22 @@ import (
 	"context"
 
 	model "cato-example-bms/internal/models/database/books"
+
 	"github.com/Masterminds/squirrel"
+	"github.com/ncuhome/cato/core/rdb"
 )
 
+type RdbRepoBooks struct {
+	basicRepo
+	e rdb.Engine[model.Books]
+}
+
+func NewRdbRepoBooks(eg rdb.Engine[model.Books]) *RdbRepoBooks {
+	return &RdbRepoBooks{basicRepo: basicRepo{eg}, e: eg}
+}
+
 type basicRepo struct {
-	engine
+	rdb.Engine[model.Books]
 }
 
 func (b *basicRepo) FindByCategoryAndBookClass(ctx context.Context, container *model.Books) ([]*model.Books, error) {
@@ -18,7 +29,8 @@ func (b *basicRepo) FindByCategoryAndBookClass(ctx context.Context, container *m
 		container.GetColCategory():  container.Category,
 		container.GetColBookClass(): container.BookClass,
 	}
-	sql, args, err := squirrel.Select(container.AllCols()...).From(container.TableName()).Where(cond).ToSql()
+	builder := new(squirrel.StatementBuilderType).PlaceholderFormat(container.Placeholder())
+	sql, args, err := builder.Select(container.AllCols()...).From(container.TableName()).Where(cond).ToSql()
 	if err != nil {
 		return nil, err
 	}
@@ -29,7 +41,8 @@ func (b *basicRepo) FindById(ctx context.Context, container *model.Books) (*mode
 	cond := squirrel.Eq{
 		container.GetColId(): container.Id,
 	}
-	sql, args, err := squirrel.Select(container.AllCols()...).From(container.TableName()).Where(cond).ToSql()
+	builder := new(squirrel.StatementBuilderType).PlaceholderFormat(container.Placeholder())
+	sql, args, err := builder.Select(container.AllCols()...).From(container.TableName()).Where(cond).ToSql()
 	if err != nil {
 		return nil, err
 	}
@@ -40,7 +53,8 @@ func (b *basicRepo) UpdateById(ctx context.Context, data map[string]interface{},
 	cond := squirrel.Eq{
 		container.GetColId(): container.Id,
 	}
-	sql, args, err := squirrel.Update(container.TableName()).SetMap(data).Where(cond).ToSql()
+	builder := new(squirrel.StatementBuilderType).PlaceholderFormat(container.Placeholder())
+	sql, args, err := builder.Update(container.TableName()).SetMap(data).Where(cond).ToSql()
 	if err != nil {
 		return err
 	}
@@ -52,7 +66,8 @@ func (b *basicRepo) DeleteById(ctx context.Context, container *model.Books) erro
 	cond := squirrel.Eq{
 		container.GetColId(): container.Id,
 	}
-	sql, args, err := squirrel.Delete(container.TableName()).Where(cond).ToSql()
+	builder := new(squirrel.StatementBuilderType).PlaceholderFormat(container.Placeholder())
+	sql, args, err := builder.Delete(container.TableName()).Where(cond).ToSql()
 	if err != nil {
 		return err
 	}
@@ -64,7 +79,8 @@ func (b *basicRepo) FindByName(ctx context.Context, container *model.Books) (*mo
 	cond := squirrel.Eq{
 		container.GetColName(): container.Name,
 	}
-	sql, args, err := squirrel.Select(container.AllCols()...).From(container.TableName()).Where(cond).ToSql()
+	builder := new(squirrel.StatementBuilderType).PlaceholderFormat(container.Placeholder())
+	sql, args, err := builder.Select(container.AllCols()...).From(container.TableName()).Where(cond).ToSql()
 	if err != nil {
 		return nil, err
 	}
@@ -75,7 +91,8 @@ func (b *basicRepo) UpdateByName(ctx context.Context, data map[string]interface{
 	cond := squirrel.Eq{
 		container.GetColName(): container.Name,
 	}
-	sql, args, err := squirrel.Update(container.TableName()).SetMap(data).Where(cond).ToSql()
+	builder := new(squirrel.StatementBuilderType).PlaceholderFormat(container.Placeholder())
+	sql, args, err := builder.Update(container.TableName()).SetMap(data).Where(cond).ToSql()
 	if err != nil {
 		return err
 	}
@@ -87,7 +104,8 @@ func (b *basicRepo) DeleteByName(ctx context.Context, container *model.Books) er
 	cond := squirrel.Eq{
 		container.GetColName(): container.Name,
 	}
-	sql, args, err := squirrel.Delete(container.TableName()).Where(cond).ToSql()
+	builder := new(squirrel.StatementBuilderType).PlaceholderFormat(container.Placeholder())
+	sql, args, err := builder.Delete(container.TableName()).Where(cond).ToSql()
 	if err != nil {
 		return err
 	}
@@ -105,7 +123,8 @@ func (b *basicRepo) Insert(ctx context.Context, data map[string]interface{}) err
 		values[index] = value
 		index++
 	}
-	sql, args, err := squirrel.Insert(container.TableName()).Columns(cols...).Values(values...).ToSql()
+	builder := new(squirrel.StatementBuilderType).PlaceholderFormat(container.Placeholder())
+	sql, args, err := builder.Insert(container.TableName()).Columns(cols...).Values(values...).ToSql()
 	if err != nil {
 		return err
 	}

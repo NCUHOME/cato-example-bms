@@ -7,6 +7,19 @@ import (
 	"context"
 )
 
+var (
+	repo Repo
+)
+
+func GetRepo() Repo {
+	return repo
+}
+
+type Repo interface {
+	basic
+	extension
+}
+
 type basic interface {
 	FindByCategoryAndBookClass(ctx context.Context, container *model.Books) ([]*model.Books, error)
 	FindById(ctx context.Context, container *model.Books) (*model.Books, error)

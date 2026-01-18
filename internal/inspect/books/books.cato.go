@@ -3,15 +3,69 @@
 package books
 
 import (
-	inspectcommon "cato-example-bms/internal/inspect/common"
 	domainbooks "cato-example-bms/internal/models/domain/books"
 )
 
 type SearchBooksByCategoryRequest struct {
+	Code    string
+	Message string
+	Body    *SearchBooksByCategoryRequestBody
+}
+
+func (m *SearchBooksByCategoryRequest) GetCode() string {
+	return m.Code
+}
+
+func (m *SearchBooksByCategoryRequest) SetCode(code string) {
+	m.Code = code
+}
+
+func (m *SearchBooksByCategoryRequest) GetMessage() string {
+	return m.Message
+}
+
+func (m *SearchBooksByCategoryRequest) SetMessage(message string) {
+	m.Message = message
+}
+
+func (m *SearchBooksByCategoryRequest) GetBody() interface{} {
+	return m.Body
+}
+
+func (m *SearchBooksByCategoryRequest) ResetBody() {
+	m.Body = nil
+}
+
+type SearchBooksByCategoryRequestBody struct {
 	Category string
 }
 
 type SearchBooksByCategoryResponse struct {
-	Base    *inspectcommon.ResponseCommonStruct
-	Results []*domainbooks.BookBrief
+	Code    string
+	Message string
+	Body    []*domainbooks.BookBrief
+}
+
+func (m *SearchBooksByCategoryResponse) GetCode() string {
+	return m.Code
+}
+
+func (m *SearchBooksByCategoryResponse) SetCode(code string) {
+	m.Code = code
+}
+
+func (m *SearchBooksByCategoryResponse) GetMessage() string {
+	return m.Message
+}
+
+func (m *SearchBooksByCategoryResponse) SetMessage(message string) {
+	m.Message = message
+}
+
+func (m *SearchBooksByCategoryResponse) GetBody() interface{} {
+	return m.Body
+}
+
+func (m *SearchBooksByCategoryResponse) ResetBody() {
+	m.Body = nil
 }

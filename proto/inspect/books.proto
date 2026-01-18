@@ -5,7 +5,6 @@ package proto.inspect;
 
 option go_package = "cato-example-bms/generated/internal/models/inspect/books";
 
-import "proto/common/common.proto";
 import "proto/domain/books.proto";
 import "cato/proto/extension.proto";
 
@@ -15,11 +14,22 @@ option (cato.cato_opt) = {
 
 
 message SearchBooksByCategoryRequest {
+  option (cato.http_param_opt) = {impl: true};
+
+  string code = 1;
+  string message = 2;
+  SearchBooksByCategoryRequestBody body = 3;
+}
+
+message SearchBooksByCategoryRequestBody {
   string category = 1;
 }
 
 message SearchBooksByCategoryResponse {
-  common.ResponseCommonStruct base = 1;
-  repeated domain.BookBrief results = 2;
+  option (cato.http_param_opt) = {impl: true};
+
+  string code = 1;
+  string message = 2;
+  repeated domain.BookBrief body = 3;
 }
 
